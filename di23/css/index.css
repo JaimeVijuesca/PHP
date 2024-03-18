@@ -1,0 +1,28 @@
+.row{
+    display: flex;
+    background-color: #F3F9D2;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.divLogotipo{
+    background-color: #F3F9D2;
+}
+
+.divLogotipo img{
+    height: 3rem;
+}
+.divLog{
+    text-align: right;
+    background-color: #F3F9D2;
+}
+.divLog img{
+    height: 2em;
+}
+.divTituloApp{
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-size: 1.5em;
+   
+}

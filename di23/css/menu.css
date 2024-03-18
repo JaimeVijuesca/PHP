@@ -1,0 +1,14 @@
+.nav-link {
+    padding: 0.1rem 1rem;
+}
+#secMenuPagina{
+    background-color: white;
+}
+#navbarcss{
+    background-color: #93827F;
+}
+.nav-link .navbar-nac .nav-link.active{
+    color: white;
+}
+
+
