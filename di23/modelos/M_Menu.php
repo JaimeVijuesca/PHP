@@ -16,7 +16,7 @@ class M_Menu extends Modelo
         $menuSQL = "SELECT * FROM MENU WHERE 1=1 ";
         $menu = $this->DAO->consultar($menuSQL);
 
-      
+
 
         // Devolver ambos conjuntos de datos en un arreglo asociativo
         return array('menu' => $menu);
@@ -131,6 +131,36 @@ class M_Menu extends Modelo
         return ['permiso' => $menu];
     }
 
-}
+    public function listaMenuRoles($filtros = array())
+    {
+        $SQL = "SELECT 
+        pr.id_rol, 
+        p.id_permiso, 
+        p.codigos, 
+        m.titulo
+    FROM 
+        permisosroles pr 
+    right JOIN 
+        permisos p ON pr.id_permiso = p.id_permiso 
+    LEFT JOIN 
+        menu m ON p.id_menu = m.id_menu
+    WHERE 
+        pr.id_rol = " . $filtros['id_rol'] . "  OR pr.id_rol is null";
+        $menu = $this->DAO->consultar($SQL);
+        return $menu;
+    }
 
+    public function setPermisoRol($filtros = array())
+    {
+
+        if ($filtros['accion'] == 'true') {
+            $SQL = "INSERT INTO PERMISOSROLES (id_permiso, id_rol) VALUES (" . $filtros['id_permiso'] . ", " . $filtros['id_rol'] . ")";
+            $menu = $this->DAO->insertar($SQL);
+        } else {
+            $SQL = "DELETE FROM PERMISOSROLES WHERE id_permiso = " . $filtros['id_permiso'] . " AND id_rol = " . $filtros['id_rol'];
+            $menu = $this->DAO->insertar($SQL);
+        }
+        return $menu;
+    }
+}
 ?>

@@ -101,6 +101,20 @@ class C_Menu extends Controlador
         $editarPermisosMenu = $this->modelo->eliminarPermisos($filtros);
     }
 
+    public function getListaMenuRoles($filtros = array())
+    {
+        $listaMenuRoles = $this->modelo->listaMenuRoles($filtros);
+        Vista::render(
+            'vistas/Menus/V_Menu_Roles.php',
+            ['listaMenuRoles' => $listaMenuRoles, 'id_rol' => $filtros['id_rol']]
+        );
+    }
+
+    public function setPermisoRol($filtros = array())
+    {
+        $setPermisoRol = $this->modelo->setPermisoRol($filtros);
+    }
+
 
 }
 ?>

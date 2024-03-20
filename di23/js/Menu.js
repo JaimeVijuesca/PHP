@@ -32,26 +32,91 @@ function cargarDatosMenu(id_menu) {
 
 
 function enviarMenu() {
+    // Obtén el elemento select
+    let selectRoles = document.getElementById('roles');
+    let selectUsuarios = document.getElementById('usuarios');
+
+    // Obtén el valor seleccionado
+    let valorSeleccionadoRoles = selectRoles.value;
+    let valorSeleccionadoUsuarios = selectUsuarios.value;
+
+
+
+    let capaResultadosBusqueda = document.getElementById("capaResultadosBusqueda");
+
+    // Si el formulario ya está visible, ocúltalo
+    // if (capaResultadosBusqueda.innerHTML.trim() !== '') {
+    //     capaResultadosBusqueda.innerHTML = '';
+    //     return;
+    // }
+
+    
+    if(capaResultadosBusqueda.style.display == 'none'){
+        if (valorSeleccionadoRoles == '' && valorSeleccionadoUsuarios == '') {
+            let opciones = { method: "GET" };
+            let parametros = "controlador=Menu&metodo=getListaMenu";
+            parametros += "&" + new URLSearchParams(new FormData(document.getElementById("mirarMenu"))).toString();
+            fetch("C_Ajax.php?" + parametros, opciones)
+                .then(res => {
+                    if (res.ok) {
+                        return res.text(); 
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })   
+                .then(vista => {
+                    capaResultadosBusqueda.innerHTML = vista;
+                })
+                .catch(error => {
+                    console.log('Error: ', error.message);
+                });
+        }else if (valorSeleccionadoRoles != 0 && valorSeleccionadoUsuarios == '') {
+            let opciones = { method: "GET" };
+            let parametros = "controlador=Menu&metodo=getListaMenuRoles&id_rol=" + valorSeleccionadoRoles;
+            fetch("C_Ajax.php?" + parametros, opciones)
+                .then(res => {
+                    if (res.ok) {
+                        return res.text();  
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .then(vista => {
+                    capaResultadosBusqueda.innerHTML = vista;
+                })
+                .catch(error => {
+                    console.log('Error: ', error.message);
+                });
+        }
+    
+        capaResultadosBusqueda.style.display = 'block';
+    } else {
+        capaResultadosBusqueda.style.display = 'none';
+        capaResultadosBusqueda.innerHTML = "";
+    }
+}
+
+function setPermisoRol(id_permiso , id_rol , accion){
     let opciones = { method: "GET" };
-    let parametros = "controlador=Menu&metodo=getListaMenu";
-    parametros += "&" + new URLSearchParams(new FormData(document.getElementById("mirarMenu"))).toString();
+    let parametros = "controlador=Menu&metodo=setPermisoRol&id_permiso=" + id_permiso + "&id_rol=" + id_rol + "&accion=" + accion;
     fetch("C_Ajax.php?" + parametros, opciones)
         .then(res => {
             if (res.ok) {
-                return res.text(); 
+                return res.text();  
             } else {
                 throw new Error('Network response was not ok');
             }
-        })   
-        .then(vista => {
-            document.getElementById("capaResultadosBusqueda").innerHTML = vista;
+        }).then(data => {
+            console.log(data);  // Imprime la respuesta del servidor
         })
         .catch(error => {
             console.log('Error: ', error.message);
         });
+
+
 }
 
-function cargarMenu(){
+function cargarMenu(id_menu){
     opciones = {method: "GET"};
     parametros ="controlador=Menu&metodo=buscarMenu";
     fetch("C_Ajax.php?" + parametros,opciones)
@@ -97,7 +162,6 @@ function actualizarMenu() {
         .catch(error => {
             console.log('Error: ', error.message);
         });
-enviarMenu();
 cargarMenu();
 }
 
@@ -161,7 +225,6 @@ function crearMenuNuevo() {
         .catch(error => {
             console.log('Error: ', error.message);
         });
-    enviarMenu();
     cargarMenu();
 }
 
@@ -181,7 +244,6 @@ function borrarMenu(id_menu) {
         .catch(error => {
             console.log('Error: ', error.message);
         });
-    enviarMenu();
     cargarMenu();
 }
 
@@ -215,7 +277,7 @@ function permisosMenu(id_menu){
 function editarPermisosMenu(id_permiso){ 
     let opciones = { method: "GET" };
     let parametros = "controlador=Menu&metodo=editarPermisosMenu&id_permiso=" + id_permiso;
-    parametros += "&" + new URLSearchParams(new FormData(document.getElementById("menuEditarPermisos"))).toString();
+    parametros += "&" + new URLSearchParams(new FormData(document.getElementById("menuEditarPermisos" + id_permiso))).toString();
     
     fetch("C_Ajax.php?" + parametros, opciones)
         .then(res => {
@@ -239,20 +301,23 @@ function editarPermisosMenu(id_permiso){
         });
 }
 function eliminarPermisos(id_menu){
-    let opciones = { method: "GET" };
-    let parametros = "controlador=Menu&metodo=eliminarPermisos&id_permiso=" + id_menu;
-    fetch("C_Ajax.php?" + parametros, opciones)
-        .then(res => {
-            if (res.ok) {
-                return res.text();  
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        }).then(data => {
-            console.log(data);  // Imprime la respuesta del servidor
-        })
-        .catch(error => {
-            console.log('Error: ', error.message);
-        });
+    if(confirm("¿Está seguro de que desea eliminar este permiso?")){
+        let opciones = { method: "GET" };
+        let parametros = "controlador=Menu&metodo=eliminarPermisos&id_permiso=" + id_menu;
+        fetch("C_Ajax.php?" + parametros, opciones)
+            .then(res => {
+                if (res.ok) {
+                    return res.text();  
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            }).then(data => {
+                console.log(data);  // Imprime la respuesta del servidor
+            })
+            .catch(error => {
+                console.log('Error: ', error.message);
+            });
+    }
+    
 }
 
