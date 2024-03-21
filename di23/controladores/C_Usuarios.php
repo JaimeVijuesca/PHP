@@ -49,6 +49,7 @@
         
          public function insertarAndUpdaterUsuario($parametro=array()){
          $resultado = $this->modelo->insertarAndUpdaterUsuario($parametro);
+            Vista::render('vistas/Usuarios/V_Menu_RolesPermisos.php', ['resultado' => $resultado]);
          }
         
     }

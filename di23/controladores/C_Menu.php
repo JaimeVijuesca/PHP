@@ -115,6 +115,34 @@ class C_Menu extends Controlador
         $setPermisoRol = $this->modelo->setPermisoRol($filtros);
     }
 
+    public function getListaMenuUsuarios($filtros = array())
+    {
+        $listaMenuRolesUsuarios = $this->modelo->getListaMenuUsuarios($filtros);
+        $rolesUsuario = $this->modelo->getRolesUsers($filtros);
+        Vista::render(
+            'vistas/Menus/V_Menu_RolesUsuarios.php',
+            ['listaMenuRolesUsuarios' => $listaMenuRolesUsuarios, 'id_usuario' => $filtros['id_usuario'], 'rolesUsuario' => $rolesUsuario]
+        );
+    }
 
+
+    public function setPermisoUsuario($filtros = array())
+    {
+        $setPermisoUsuario = $this->modelo->setPermisoUsuario($filtros);
+    }
+
+    public function getListaUsuariosRoles($filtros = array())
+    {
+        $listaMenuRoles = $this->modelo->getListaMenuRolesUsuarios($filtros);
+        Vista::render(
+            'vistas/Menus/V_Menu_RolesPermisos.php',
+            ['listaMenuRoles' => $listaMenuRoles, 'id_usuario' => $filtros['id_usuario']]
+        );
+    }
+
+    public function setRolUsuarioInsertDelete($filtros = array())
+    {
+        $setPermisoUsuarioRol = $this->modelo->setPermisoUsuarioRol($filtros);
+    }
 }
 ?>

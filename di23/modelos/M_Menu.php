@@ -150,6 +150,23 @@ class M_Menu extends Modelo
         return $menu;
     }
 
+    public function getListaMenuUsuarios($filtros = array())
+    {
+        $SQL = "SELECT p.id_permiso, pu.id_usuario, p.codigos FROM permisosusuario pu 
+        right JOIN permisos p ON pu.id_permiso = p.id_permiso WHERE pu.id_usuario = " . $filtros['id_usuario'] . " OR pu.id_usuario is null;";
+
+        $menu = $this->DAO->consultar($SQL);
+        return $menu;
+    }
+
+    public function getRolesUsers($filtros = array())
+    {
+        $SQL = "SELECT roles.rol , roles.id_rol from rolesusuarios, roles
+         where rolesusuarios.id_rol = roles.id_rol and rolesusuarios.id_Usuarios = " . $filtros['id_usuario'] . "";
+        $menu = $this->DAO->consultar($SQL);
+        return $menu;
+
+    }
     public function setPermisoRol($filtros = array())
     {
 
@@ -158,6 +175,40 @@ class M_Menu extends Modelo
             $menu = $this->DAO->insertar($SQL);
         } else {
             $SQL = "DELETE FROM PERMISOSROLES WHERE id_permiso = " . $filtros['id_permiso'] . " AND id_rol = " . $filtros['id_rol'];
+            $menu = $this->DAO->insertar($SQL);
+        }
+        return $menu;
+    }
+
+    public function setPermisoUsuario($filtros = array())
+    {
+        if ($filtros['accion'] == 'true') {
+            $SQL = "INSERT INTO PERMISOSUSUARIO (id_permiso, id_usuario) VALUES (" . $filtros['id_permiso'] . ", " . $filtros['id_usuario'] . ")";
+            $menu = $this->DAO->insertar($SQL);
+        } else {
+            $SQL = "DELETE FROM PERMISOSUSUARIO WHERE id_permiso = " . $filtros['id_permiso'] . " AND id_usuario = " . $filtros['id_usuario'];
+            $menu = $this->DAO->insertar($SQL);
+        }
+        return $menu;
+    }
+
+    public function getListaMenuRolesUsuarios($filtros = array())
+    {
+        $SQL = "SELECT r.id_rol, ru.id_Usuarios, r.rol 
+        FROM roles r 
+        LEFT JOIN rolesusuarios ru ON r.id_rol = ru.id_rol AND ru.id_Usuarios = " . $filtros['id_usuario'] . "";
+        $menu = $this->DAO->consultar($SQL);
+        return $menu;
+    }
+
+    public function setPermisoUsuarioRol($filtros = array())
+    {
+
+        if ($filtros['accion'] == 'true') {
+            $SQL = "INSERT INTO ROLESUSUARIOS (id_rol, id_Usuarios) VALUES (" . $filtros['id_rol'] . ", " . $filtros['id_usuario'] . ")";
+            $menu = $this->DAO->insertar($SQL);
+        } else {
+            $SQL = "DELETE FROM ROLESUSUARIOS WHERE id_rol = " . $filtros['id_rol'] . " AND id_Usuarios = " . $filtros['id_usuario'];
             $menu = $this->DAO->insertar($SQL);
         }
         return $menu;

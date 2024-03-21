@@ -42,7 +42,7 @@ if ($usuarios != null && $totalResultados > 0) {
         echo '<td>' . $fila['login'] . '</td>';
         if (isset ($_SESSION['permisosUsuarios'])) {
             foreach ($_SESSION['permisosUsuarios'] as $permisoUsuario) {
-                if ($permisoUsuario['rol'] == 'Administrador' || $permisoUsuario['']) {
+                if ($permisoUsuario['rol'] == 'Administrador') {
                     echo '<td>';
                     echo "<img src='..\di23\imagenes\lapiz.png' style='width:64px' onclick='enseñarformulario(),cargarDatosFormulario(" . $fila['id_Usuario'] . ", \"" . $fila['nombre'] . "\", \"" . $fila['apellido_1'] . "\", \"" . $fila['apellido_2'] . "\", \"" . $fila['sexo'] . "\", \"" . $fila['mail'] . "\", \"" . $fila['movil'] . "\", \"" . $fila['login'] . "\", \"" . $fila['activo'] . "\")'> ";
                     echo '</td>';

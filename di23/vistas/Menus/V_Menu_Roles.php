@@ -2,7 +2,6 @@
 $roles = $datos['listaMenuRoles'];
 
 
-
 //var_dump($datos);
 
 foreach ($roles as $rol) {
